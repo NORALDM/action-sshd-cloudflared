@@ -154,6 +154,7 @@ public_key=$(cut -d' ' -f1,2 < ssh_host_rsa_key.pub)
     echo '    '
     echo "    # Alternative if you don't want to verify the host key"
     echo "    ssh -o ProxyCommand='cloudflared access tcp --hostname $url' -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=accept-new runner@action-sshd-cloudflared"
+    echo "    $(date)"
     echo '    '
     echo '    '
     echo '    '
