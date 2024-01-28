@@ -21,7 +21,7 @@ notify_func() {
 #
 if [ ! -z "$API_KEY" ]; then
     notify_func() {
-        tee >(curl -H 'Authorization: Bearer $API_KEY" -F 'content=<-' https://dpaste.com/api/v2/)
+        tee >(curl -H "Authorization: Bearer $API_KEY" -F 'content=<-' https://dpaste.com/api/v2/)
     }
 fi
 
