@@ -19,10 +19,9 @@ notify_func() {
 # ix.io notification routine: save the URL of the paste in `/tmp/ix-io.txt` so
 # we can delete the paste from the ix.io server on session end.
 #
-if [ ! -z "$IX_USERNAME" ] && [ ! -z "$IX_PASSWORD" ]; then
+if [ ! -z "$API_KEY" ]; then
     notify_func() {
-        # `f:1=<-` will set the value of the `f:1` form field with data from `stdin`
-        tee >(curl -u "$IX_USERNAME:$IX_PASSWORD" -F 'f:1=<-' http://ix.io > /tmp/ix-io.txt)
+        tee >(curl -H 'Authorization: Bearer $API_KEY" -F 'content=<-' https://dpaste.com/api/v2/)
     }
 fi
 
@@ -174,7 +173,3 @@ echo 'Session ended'
 
 kill "$cloudflared_pid"
 kill "$sshd_pid"
-
-if [ -s /tmp/ix-io.txt ]; then
-    curl -u "$IX_USERNAME:$IX_PASSWORD" -X DELETE "$(cat /tmp/ix-io.txt)"
-fi
