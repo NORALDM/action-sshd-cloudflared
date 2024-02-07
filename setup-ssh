@@ -24,7 +24,7 @@ if [ ! -z "$GIST" -a ! -z "$TOKEN" ]; then
         tee >(curl -X PATCH -H "Authorization: Bearer $TOKEN"\
 	 https://api.github.com/gists/"$GIST" -d \
 	'{"description":"'"$(date)"\
-	'","files":{"log.txt":{"content":'$(jq -Rs .)'}}}')
+	'","files":{"log.txt":{"content":'"$(jq -Rs .)"'}}}')
     }
 fi
 
