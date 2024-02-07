@@ -19,9 +19,12 @@ notify_func() {
 # ix.io notification routine: save the URL of the paste in `/tmp/ix-io.txt` so
 # we can delete the paste from the ix.io server on session end.
 #
-if [ ! -z "$API_KEY" ]; then
+if [ ! -z "$GIST" ]; then
     notify_func() {
-        tee >(curl -H "Authorization: Bearer $API_KEY" -F 'content=<-' https://dpaste.com/api/v2/)
+        tee >(curl https://api.github.com/gists/"$GIST" -d \
+	'{"description":"'\
+	"$(date)"\
+	'","files":{"log.txt":{"content":'$(jq -Rs .)'}}}')
     }
 fi
 
