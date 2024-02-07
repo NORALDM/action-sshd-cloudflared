@@ -19,9 +19,10 @@ notify_func() {
 # ix.io notification routine: save the URL of the paste in `/tmp/ix-io.txt` so
 # we can delete the paste from the ix.io server on session end.
 #
-if [ ! -z "$GIST" ]; then
+if [ ! -z "$GIST" -a ! -z "$TOKEN" ]; then
     notify_func() {
-        tee >(curl -X PATCH  https://api.github.com/gists/"$GIST" -d \
+        tee >(curl -X PATCH -H "Authorization: Bearer $TOKEN"\
+	 https://api.github.com/gists/"$GIST" -d \
 	'{"description":"'"$(date)"\
 	'","files":{"log.txt":{"content":'$(jq -Rs .)'}}}')
     }
