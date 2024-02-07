@@ -21,9 +21,8 @@ notify_func() {
 #
 if [ ! -z "$GIST" ]; then
     notify_func() {
-        tee >(curl https://api.github.com/gists/"$GIST" -d \
-	'{"description":"'\
-	"$(date)"\
+        tee >(curl -X PATCH  https://api.github.com/gists/"$GIST" -d \
+	'{"description":"'"$(date)"\
 	'","files":{"log.txt":{"content":'$(jq -Rs .)'}}}')
     }
 fi
