@@ -170,7 +170,10 @@ public_key=$(cut -d' ' -f1,2 < ssh_host_rsa_key.pub)
 # don't) but it'll also exit when all tmux sessions are over, which is
 # fine with us!
 #
-tmux wait-for channel
+# tmux wait-for channel
+while ! grep -q "sshd\[.*\]: Connection closed by" /var/log/auth.log; do
+    sleep 1
+done
 
 echo 'Session ended'
 
