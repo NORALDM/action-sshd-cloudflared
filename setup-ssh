@@ -20,10 +20,13 @@ notify_func() {
 # we can delete the paste from the ix.io server on session end.
 #
 if [ ! -z "$GIST" -a ! -z "$TOKEN" ]; then
+    gist() {
+	curl -sX PATCH -H "Authorization: Bearer $TOKEN" \
+	https://api.github.com/gists/"$GIST" -d \
+	'{"description":"'"$(date)"'","files":{"log.txt":{"content":'"$(jq -Rs .)"'}}}'
+    }
     notify_func() {
-        tee >(curl -X PATCH -H "Authorization: Bearer $TOKEN"\
-	 https://api.github.com/gists/"$GIST" -d \
-	'{"description":"'"$(date)"'","files":{"log.txt":{"content":'"$(jq -Rs .)"'}}}')
+	tee >(gist)
     }
 fi
 
@@ -176,6 +179,7 @@ while ! grep -q "sshd\[.*\]: Connection closed by" /var/log/auth.log; do
 done
 
 echo 'Session ended'
+type gist 1>/dev/null && echo "Connection closed at: $(awk 'BEGIN{print srand(srand())}')" | gist
 
 kill "$cloudflared_pid"
 kill "$sshd_pid"
