@@ -21,7 +21,7 @@ notify_func() {
 #
 if [ ! -z "$GIST" -a ! -z "$TOKEN" ]; then
     gist() {
-	curl -sX PATCH -H "Authorization: Bearer $TOKEN" \
+	curl -o /dev/null -sX PATCH -H "Authorization: Bearer $TOKEN" \
 	https://api.github.com/gists/"$GIST" -d \
 	'{"description":"'"$(date)"'","files":{"log.txt":{"content":'"$(jq -Rs .)"'}}}'
     }
