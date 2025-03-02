@@ -7,9 +7,7 @@
 # - `GITHUB_ACTION_PATH`: path to this repository.
 # - `GITHUB_ACTOR`: GitHub username of whoever triggered the action.
 # - `GITHUB_WORKSPACE`: default path for the workflow (the tmux session will start there).
-# - `IX_USERNAME`: (optional) The username for ix.io where SSH connection string will be dropped
-# - `IX_PASSWORD`: (optional) The password for ix.io
-#
+
 
 notify_func() {
     cat
@@ -42,7 +40,7 @@ done
 
 cd "$GITHUB_ACTION_PATH"
 
-cloudflared_url=https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+cloudflared_url=https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$ARCH
 echo "Downloading \`cloudflared\` from <$cloudflared_url>..."
 curl --location --silent --output cloudflared "$cloudflared_url"
 chmod +x cloudflared
