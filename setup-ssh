@@ -165,20 +165,6 @@ public_key=$(cut -d' ' -f1,2 < ssh_host_rsa_key.pub)
     echo '    '
 ) | notify_func
 
-#
-# The `channel` argument is not used but needs to be passed.
-#
-# `wait-for` will hang until we call `tmux wait-for -S channel` (which we
-# don't) but it'll also exit when all tmux sessions are over, which is
-# fine with us!
-#
-# tmux wait-for channel
-while ! grep -q "sshd\[.*\]: Connection closed by" /var/log/auth.log; do
+while true; do
     sleep 1
 done
-
-echo 'Session ended'
-type gist 1>/dev/null && echo "Connection closed at: $(awk 'BEGIN{print srand(srand())}')" | gist
-
-kill "$cloudflared_pid"
-kill "$sshd_pid"
